@@ -124,7 +124,7 @@ function checkMatch() {
       playSound("winSound");
       saveScore();
       const message = document.getElementById("winMessage");
-      message.innerText = `🎉 Congratulations! You completed the game in <strong>{timer}</strong> seconds with <strong>{attempts}</strong> turns.`;
+      message.innerText = `🎉 Congratulations! You completed the game in <strong>${timer}</strong> seconds with <strong>$s{attempts}</strong> turns.`;
       message.style.display = "block";
     }
   } else {
