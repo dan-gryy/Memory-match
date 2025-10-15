@@ -107,7 +107,7 @@ function flipCard(card) {
   flipped.push(card);
   if (flipped.length === 2) {
     attempts++;
-    document.getElementById("attempts").innerText = `Ходи: ${attempts}`;
+    document.getElementById("attempts").innerText = `Turns: ${attempts}`;
     checkMatch();
   }
   playSound("flipSound");
@@ -124,7 +124,7 @@ function checkMatch() {
       playSound("winSound");
       saveScore();
       const message = document.getElementById("winMessage");
-      message.innerText = `🎉 Вітаємо! Ви перемогли за ${timer} секунд і ${attempts} ходів.`;
+      message.innerText = `🎉 Congratulations! You completed the game in <strong>{timer}</strong> seconds with <strong>{attempts}</strong> turns.`;
       message.style.display = "block";
     }
   } else {
@@ -152,7 +152,7 @@ function showScores() {
   list.innerHTML = "";
   scores.forEach((s, i) => {
     const item = document.createElement("li");
-    item.textContent = `${i + 1}. Час: ${s.time}, Ходи: ${
+    item.textContent = `${i + 1}. Time: ${s.time}, Turns: ${
       s.attempts
     }, Рівень: ${s.difficulty}`;
     list.appendChild(item);
