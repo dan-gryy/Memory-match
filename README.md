@@ -13,6 +13,5 @@
 - ⏱ Real-time timer and move counter  
 - 🧩 Difficulty levels: Easy (4×4), Medium (6×6), Hard (8×8)  
 - 🔊 Sound effects for flipping, matching, and winning  
-- 🏆 High score tracking via `localStorage`  
-- 📱 Mobile-responsive layout  
+- 🏆 High score tracking via `localStorage`    
 
