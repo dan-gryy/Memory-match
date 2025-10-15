@@ -59,16 +59,16 @@ function getSymbols() {
 
   const level = document.getElementById("difficulty").value;
   if (level === "easy") return base.slice(0, 8);
-  if (level === "medium") return base.slice(0, 32);
-  if (level === "hard") return base.slice(0, 36);
+  if (level === "medium") return base.slice(0, 18);
+  if (level === "hard") return base.slice(0, 32);
   return base.slice(0, 8);
 }
 function updateGridSize() {
   const board = document.getElementById("gameBoard");
   const level = document.getElementById("difficulty").value;
   if (level === "easy") board.style.gridTemplateColumns = "repeat(4, 100px)";
-  if (level === "medium") board.style.gridTemplateColumns = "repeat(8, 100px)";
-  if (level === "hard") board.style.gridTemplateColumns = "repeat(12, 100px)";
+  if (level === "medium") board.style.gridTemplateColumns = "repeat(6, 100px)";
+  if (level === "hard") board.style.gridTemplateColumns = "repeat(8, 100px)";
 }
 
 function startGame() {
@@ -159,6 +159,4 @@ function playSound(id) {
   const sound = document.getElementById(id);
   if (sound) sound.play();
 }
-
-startGame();
 showScores();
