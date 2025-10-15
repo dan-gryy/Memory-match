@@ -1,0 +1,30 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #217f78;
+}
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  gap: 10px;
+  justify-content: center;
+  margin: 20px auto;
+}
+.card {
+  width: 100px;
+  height: 100px;
+  background-color: #534949;
+  border: 2px solid #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 2em;
+}
+.card.flipped {
+  background-color: #fff;
+}
+.card.matched {
+  background-color: #4caf50;
+  cursor: default;
+}
