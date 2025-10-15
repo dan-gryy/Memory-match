@@ -7,20 +7,23 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div id="winMessage" class="win-message" style="display: none"></div>
     <h1>Memory match</h1>
     <div id="stats">
       <span id="attempts">Ходи: 0</span>
       <span id="timer">Час: 0s</span>
     </div>
     <div class="game-board" id="gameBoard"></div>
-    <button onclick="startGame()">Почати</button>
+    <button class="game-button" onclick="startGame()">
+      Почати / Перезапустити
+    </button>
     <h2>Складність</h2>
     <select id="difficulty" onchange="startGame()">
       <option value="easy">Легкий (4x4)</option>
       <option value="medium">Середній (6x6)</option>
       <option value="hard">Важкий (8x8)</option>
     </select>
-    <h3>Рекорди</h3>
+    <h3>Результати</h3>
     <ul id="highScores"></ul>
     <audio id="matchSound" src="sound/match.mp3"></audio>
     <audio id="flipSound" src="sound/flip.mp3"></audio>
@@ -28,4 +31,3 @@
     <script src="script.js"></script>
   </body>
 </html>
-

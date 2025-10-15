@@ -64,6 +64,7 @@ function getSymbols() {
   return base.slice(0, 8);
 }
 function updateGridSize() {
+  document.getElementById("winMessage").style.display = "none";
   const board = document.getElementById("gameBoard");
   const level = document.getElementById("difficulty").value;
   if (level === "easy") board.style.gridTemplateColumns = "repeat(4, 100px)";
@@ -122,6 +123,9 @@ function checkMatch() {
       clearInterval(interval);
       playSound("winSound");
       saveScore();
+      const message = document.getElementById("winMessage");
+      message.innerText = `🎉 Вітаємо! Ви перемогли за ${timer} секунд і ${attempts} ходів.`;
+      message.style.display = "block";
     }
   } else {
     setTimeout(() => {
@@ -142,7 +146,6 @@ function saveScore() {
   localStorage.setItem("memoryScores", JSON.stringify(scores.slice(0, 10)));
   showScores();
 }
-
 function showScores() {
   const scores = JSON.parse(localStorage.getItem("memoryScores") || "[]");
   const list = document.getElementById("highScores");

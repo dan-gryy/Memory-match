@@ -10,6 +10,26 @@ body {
   justify-content: center;
   margin: 20px auto;
 }
+.game-button {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.game-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+.game-button:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 .card {
   width: 100px;
   height: 100px;
@@ -28,4 +48,14 @@ body {
   background-color: #4caf50;
   cursor: default;
 }
-
+.win-message {
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 16px 24px;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
