@@ -2,7 +2,8 @@ let cards = [];
 let flipped = [];
 let attempts = 0;
 let timer = 0;
-let interval;
+let interval = null;
+let isPaused = false;
 
 function getSymbols() {
   const base = [
@@ -56,13 +57,16 @@ function getSymbols() {
     "🪷",
     "🪼",
   ];
-
   const level = document.getElementById("difficulty").value;
   if (level === "easy") return base.slice(0, 8);
   if (level === "medium") return base.slice(0, 18);
   if (level === "hard") return base.slice(0, 32);
   return base.slice(0, 8);
 }
+document.getElementById("difficulty").addEventListener("change", () => {
+  resetStats();
+  generateBoard();
+});
 function updateGridSize() {
   document.getElementById("winMessage").style.display = "none";
   const board = document.getElementById("gameBoard");
@@ -71,29 +75,58 @@ function updateGridSize() {
   if (level === "medium") board.style.gridTemplateColumns = "repeat(6, 100px)";
   if (level === "hard") board.style.gridTemplateColumns = "repeat(8, 100px)";
 }
-
-function startGame() {
-  clearInterval(interval);
-  timer = 0;
-  attempts = 0;
+function generateBoard() {
   flipped = [];
-  document.getElementById("timer").innerText = "Time: 0s";
-  document.getElementById("attempts").innerText = "Attempts: 0";
+  cards = [];
   document.getElementById("gameBoard").innerHTML = "";
+  document.body.classList.remove("easy", "medium", "hard");
+  document.body.classList.add(document.getElementById("difficulty").value);
   updateGridSize();
   const symbols = getSymbols();
   cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
   cards.forEach((symbol) => {
     const card = document.createElement("div");
     card.classList.add("card");
+    const inner = document.createElement("div");
+    inner.classList.add("card-inner");
+    const front = document.createElement("div");
+    front.classList.add("card-front");
+    const back = document.createElement("div");
+    back.classList.add("card-back");
+    back.textContent = symbol;
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
     card.dataset.symbol = symbol;
     card.addEventListener("click", () => flipCard(card));
     document.getElementById("gameBoard").appendChild(card);
   });
+}
+function startTimer() {
+  clearInterval(interval);
   interval = setInterval(() => {
     timer++;
     document.getElementById("timer").innerText = `Time: ${timer}s`;
   }, 1000);
+}
+function startGame() {
+  resetStats();
+  generateBoard();
+  startTimer();
+}
+function togglePause() {
+  if (!interval && !isPaused) return;
+  if (isPaused) {
+    interval = setInterval(() => {
+      timer++;
+      document.getElementById("timer").innerText = `Time: ${timer}s`;
+    }, 1000);
+    isPaused = false;
+  } else {
+    clearInterval(interval);
+    interval = null;
+    isPaused = true;
+  }
 }
 function flipCard(card) {
   if (
@@ -102,7 +135,6 @@ function flipCard(card) {
     card.classList.contains("flipped")
   )
     return;
-  card.textContent = card.dataset.symbol;
   card.classList.add("flipped");
   flipped.push(card);
   if (flipped.length === 2) {
@@ -129,8 +161,6 @@ function checkMatch() {
     }
   } else {
     setTimeout(() => {
-      first.textContent = "";
-      second.textContent = "";
       first.classList.remove("flipped");
       second.classList.remove("flipped");
       flipped = [];
@@ -161,5 +191,15 @@ function showScores() {
 function playSound(id) {
   const sound = document.getElementById(id);
   if (sound) sound.play();
+}
+function resetStats() {
+  clearInterval(interval);
+  interval = null;
+  timer = 0;
+  attempts = 0;
+  isPaused = false;
+  document.getElementById("timer").innerText = `Time: 0s`;
+  document.getElementById("attempts").innerText = `Turns: 0`;
+  document.getElementById("winMessage").style.display = "none";
 }
 showScores();

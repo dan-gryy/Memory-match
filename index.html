@@ -14,11 +14,10 @@
       <span id="timer">Time: 0s</span>
     </div>
     <div class="game-board" id="gameBoard"></div>
-    <button class="game-button" onclick="startGame()">
-      Start/Restart
-    </button>
+    <button class="game-button" onclick="startGame()">Start/Restart</button>
+    <button class="pause-button" onclick="togglePause()">Pause/Resume</button>
     <h2>Difficulties</h2>
-    <select id="difficulty" onchange="startGame()">
+    <select id="difficulty">
       <option value="easy">Easy (4x4)</option>
       <option value="medium">Medium (6x6)</option>
       <option value="hard">Hard (8x8)</option>
