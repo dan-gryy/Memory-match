@@ -22,12 +22,53 @@ function getSymbols() {
     "🐸",
     "🐵",
     "🐔",
+    "🦄",
+    "🐙",
+    "🦕",
+    "🦖",
+    "🐢",
+    "🐍",
+    "🐬",
+    "🐳",
+    "🦈",
+    "🦋",
+    "🐞",
+    "🐝",
+    "🦀",
+    "🐡",
+    "🦚",
+    "🦜",
+    "🦩",
+    "🐇",
+    "🐿️",
+    "🦔",
+    "🦘",
+    "🦥",
+    "🦧",
+    "🐉",
+    "🪲",
+    "🪳",
+    "🪱",
+    "🪰",
+    "🪵",
+    "🪶",
+    "🪸",
+    "🪷",
+    "🪼",
   ];
+
   const level = document.getElementById("difficulty").value;
   if (level === "easy") return base.slice(0, 8);
-  if (level === "medium") return base.slice(0, 16);
-  if (level === "hard") return base.slice(0, 24);
-  return base.slice(0, 32);
+  if (level === "medium") return base.slice(0, 32);
+  if (level === "hard") return base.slice(0, 36);
+  return base.slice(0, 8);
+}
+function updateGridSize() {
+  const board = document.getElementById("gameBoard");
+  const level = document.getElementById("difficulty").value;
+  if (level === "easy") board.style.gridTemplateColumns = "repeat(4, 100px)";
+  if (level === "medium") board.style.gridTemplateColumns = "repeat(8, 100px)";
+  if (level === "hard") board.style.gridTemplateColumns = "repeat(12, 100px)";
 }
 
 function startGame() {
@@ -38,6 +79,7 @@ function startGame() {
   document.getElementById("timer").innerText = "Time: 0s";
   document.getElementById("attempts").innerText = "Attempts: 0";
   document.getElementById("gameBoard").innerHTML = "";
+  updateGridSize();
   const symbols = getSymbols();
   cards = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
   cards.forEach((symbol) => {
@@ -114,7 +156,7 @@ function showScores() {
   });
 }
 function playSound(id) {
-  document.getElementById(id);
+  const sound = document.getElementById(id);
   if (sound) sound.play();
 }
 
