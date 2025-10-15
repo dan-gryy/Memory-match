@@ -52,7 +52,6 @@ function startGame() {
     document.getElementById("timer").innerText = `Time: ${timer}s`;
   }, 1000);
 }
-
 function flipCard(card) {
   if (
     flipped.length === 2 ||

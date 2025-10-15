@@ -1,6 +1,5 @@
 # 🧠 Memory Match — A Browser-Based Memory Game
 
-![Build Status](https://github.com/dan-gryy/memory-match/actions/workflows/main.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Made with HTML/CSS/JS](https://img.shields.io/badge/made%20with-HTML%2FCSS%2FJS-orange)
 
