@@ -281,7 +281,7 @@ body.hard .card {
   padding: 16px 24px;
   margin: 20px auto;
   max-width: 320px;
-  background: rgba(0, 0, 0, 0.6); /* напівпрозорий фон */
+  background: rgba(0, 0, 0, 0.6);
   border-radius: 16px;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(6px);
