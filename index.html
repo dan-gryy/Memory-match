@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
     <title>Memory match</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -26,14 +30,18 @@
       <span id="timer">Time: 0s</span>
     </div>
     <div class="game-board" id="gameBoard"></div>
-    <button class="game-button" onclick="startGame()">Start/Restart</button>
-    <button class="pause-button" onclick="togglePause()">Pause/Resume</button>
-    <h2>Difficulties</h2>
-    <select id="difficulty">
-      <option value="easy">Easy (4x4)</option>
-      <option value="medium">Medium (6x6)</option>
-      <option value="hard">Hard (8x8)</option>
-    </select>
+    <div class="controls">
+      <button class="game-button" onclick="startGame()">Start/Restart</button>
+      <button class="pause-button" onclick="togglePause()">Pause/Resume</button>
+      <div class="difficulty-control">
+        <label for="difficulty">Difficulties: </label>
+        <select id="difficulty">
+          <option value="easy">Easy (4x4)</option>
+          <option value="medium">Medium (6x6)</option>
+          <option value="hard">Hard (8x8)</option>
+        </select>
+      </div>
+    </div>
     <h3>Best results</h3>
     <ul id="highScores"></ul>
     <audio id="matchSound" src="sounds/match.mp3"></audio>

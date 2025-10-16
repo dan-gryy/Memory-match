@@ -165,6 +165,9 @@ function checkMatch() {
       message.innerText = `🎉 Congratulations! You completed the game in ${timer} seconds with ${attempts} turns.`;
       message.style.display = "block";
       document.querySelector(".volume-control").classList.add("win-position");
+      document
+        .querySelector(".difficulty-control")
+        .classList.add("win-position");
     }
   } else {
     setTimeout(() => {
@@ -211,6 +214,9 @@ function resetStats() {
   document.getElementById("tickSound").pause();
   document.getElementById("tickSound").currentTime = 0;
   document.querySelector(".volume-control").classList.remove("win-position");
+  document
+    .querySelector(".difficulty-control")
+    .classList.remove("win-position");
 }
 const volumeSlider = document.getElementById("volumeSlider");
 const volumeIcon = document.getElementById("volumeIcon");
