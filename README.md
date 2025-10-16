@@ -9,7 +9,6 @@
 
 ## 🚀 Features
 
-<<<<<<< HEAD
 - 🔄 Smooth emoji card flip animations
 - ⏱ Real-time timer and turn counter
 - 🧩 Difficulty levels: Easy (4×4), Medium (6×6), Hard (8×8)
@@ -18,13 +17,6 @@
 - 🏆 High score tracking via `localStorage`
 - 📱 Responsive layout for desktop and mobile
 - 🌌 Fantasy-themed background and glowing match effects
-=======
-- 🔄 Emoji card flipping animation  
-- ⏱ Real-time timer and move counter  
-- 🧩 Difficulty levels: Easy (4×4), Medium (6×6), Hard (8×8)  
-- 🔊 Sound effects for flipping, matching, and winning  
-- 🏆 High score tracking via `localStorage`    
->>>>>>> ec12a1c123b96b6c021457b34f478747c08d92d8
 
 ---
 
