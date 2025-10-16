@@ -234,10 +234,11 @@ body.hard .card {
   text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
 }
 .volume-control {
-  position: absolute;
+  position: fixed;
   top: 16px;
   left: 16px;
   z-index: 100;
+  transition: top 0.4s ease;
   background: rgba(0, 0, 0, 0.5);
   padding: 8px 12px;
   border-radius: 12px;
@@ -249,6 +250,9 @@ body.hard .card {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(4px);
   pointer-events: auto;
+}
+.volume-control.win-position {
+  top: 120px;
 }
 #volumeSlider {
   width: 100px;
