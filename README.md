@@ -29,12 +29,6 @@
 
 ---
 
-## 📁 Project Structure
-
-memory-match/ ├── index.html ├── styles.css ├── script.js ├── sounds/ │ ├── flip.mp3 │ ├── match.mp3 │ ├── win.mp3 │ └── tick.mp3
-
----
-
 ## 📈 Future Enhancements
 
 🧠 Multiplayer mode or two-player split screen
