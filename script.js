@@ -4,9 +4,8 @@ let attempts = 0;
 let timer = 0;
 let interval = null;
 let isPaused = false;
-
-function getSymbols() {
-  const base = [
+const emojiSets = {
+  animals: [
     "🐶",
     "🐱",
     "🐭",
@@ -39,25 +38,114 @@ function getSymbols() {
     "🐡",
     "🦚",
     "🦜",
-    "🦩",
-    "🐇",
-    "🐿️",
-    "🦔",
-    "🦘",
-    "🦥",
-    "🦧",
+  ],
+  cars: [
+    "🚗",
+    "🚕",
+    "🚙",
+    "🚌",
+    "🚎",
+    "🏎️",
+    "🚓",
+    "🚑",
+    "🚒",
+    "🚐",
+    "🚚",
+    "🚛",
+    "🚜",
+    "🛻",
+    "🚍",
+    "🚔",
+    "🚘",
+    "🚖",
+    "🛞",
+    "🛣️",
+    "⛽",
+    "🛑",
+    "🚦",
+    "🚧",
+    "🔧",
+    "🛠️",
+    "⚙️",
+    "🧰",
+    "🔩",
+    "🪛",
+    "🧪",
+    "🧼",
+  ],
+  food: [
+    "🍎",
+    "🍌",
+    "🍇",
+    "🍉",
+    "🍓",
+    "🍒",
+    "🍍",
+    "🥭",
+    "🥝",
+    "🍅",
+    "🥕",
+    "🌽",
+    "🥔",
+    "🥦",
+    "🧄",
+    "🧅",
+    "🍞",
+    "🥐",
+    "🥖",
+    "🧀",
+    "🍗",
+    "🍖",
+    "🥩",
+    "🍔",
+    "🍟",
+    "🌭",
+    "🍕",
+    "🥪",
+    "🌮",
+    "🌯",
+    "🥗",
+    "🍝",
+  ],
+  fantasy: [
+    "🧙‍♂️",
+    "🧝‍♀️",
+    "🧛‍♂️",
+    "🧞‍♂️",
+    "🧜‍♀️",
+    "🧚‍♀️",
     "🐉",
-    "🪲",
-    "🪳",
-    "🪱",
-    "🪰",
-    "🪵",
-    "🪶",
-    "🪸",
+    "🦄",
+    "🔮",
+    "🪄",
+    "🧪",
+    "🪬",
     "🪷",
-    "🪼",
-  ];
+    "🌌",
+    "🌠",
+    "☄️",
+    "🪐",
+    "🚀",
+    "👽",
+    "🛰️",
+    "🧿",
+    "🕯️",
+    "📜",
+    "🗝️",
+    "🧵",
+    "🧶",
+    "🪡",
+    "🧩",
+    "🪞",
+    "🪙",
+    "🧭",
+    "🪤",
+  ],
+};
+function getSymbols() {
   const level = document.getElementById("difficulty").value;
+  const theme = document.getElementById("theme").value;
+  const base = emojiSets[theme] || emojiSets["animals"];
   if (level === "easy") return base.slice(0, 8);
   if (level === "medium") return base.slice(0, 18);
   if (level === "hard") return base.slice(0, 32);
@@ -75,6 +163,18 @@ function updateGridSize() {
   if (level === "medium") board.style.gridTemplateColumns = "repeat(6, 100px)";
   if (level === "hard") board.style.gridTemplateColumns = "repeat(8, 100px)";
 }
+document.getElementById("theme").addEventListener("change", () => {
+  const theme = document.getElementById("theme").value;
+  document.body.classList.remove(
+    "theme-animals",
+    "theme-cars",
+    "theme-food",
+    "theme-fantasy"
+  );
+  document.body.classList.add(`theme-${theme}`);
+  resetStats();
+  generateBoard();
+});
 function generateBoard() {
   flipped = [];
   cards = [];

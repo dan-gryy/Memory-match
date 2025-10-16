@@ -16,7 +16,9 @@
 - 🎚 Volume slider with dynamic 🔊/🔇 icon
 - 🏆 High score tracking via `localStorage`
 - 📱 Responsive layout for desktop
-- 🌌 Fantasy-themed background and glowing match effects
+- 🌌 Glowing match effects
+- 🎨 Custom themes: Animals, Cars, Food, Fantasy — each with unique emoji sets and textures
+- 🖼️ Dynamic backgrounds: Page background changes based on selected theme
 
 ---
 
@@ -32,8 +34,6 @@
 ## 📈 Future Enhancements
 
 🧠 Multiplayer mode or two-player split screen
-
-🎭 Custom emoji themes (animals, fantasy, fruits)
 
 📊 Online leaderboard with backend integration
 
@@ -57,3 +57,4 @@ Just open `index.html` in any modern browser — no installation required.
 git clone https://github.com/your-username/memory-match.git
 cd memory-match
 open index.html
+```
