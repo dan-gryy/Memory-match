@@ -15,7 +15,7 @@
 - 🔊 Sound effects for flipping, matching, ticking, and winning
 - 🎚 Volume slider with dynamic 🔊/🔇 icon
 - 🏆 High score tracking via `localStorage`
-- 📱 Responsive layout for desktop and mobile
+- 📱 Responsive layout for desktop
 - 🌌 Fantasy-themed background and glowing match effects
 
 ---
