@@ -1,7 +1,11 @@
 body {
   font-family: Arial, sans-serif;
   text-align: center;
-  background-color: #217f78;
+  background-image: url("https://cs14.pikabu.ru/post_img/big/2023/01/22/7/167438532119863831.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 .game-board {
   display: grid;
@@ -85,6 +89,7 @@ body.hard .card {
 .card.matched {
   background-color: #4caf50;
   cursor: default;
+  animation: pulseGlow 1.2s ease-in-out infinite;
 }
 
 .card.flipped .card-inner {
@@ -105,10 +110,14 @@ body.hard .card {
 }
 .card-front {
   background-color: #534949;
+  z-index: 1;
 }
 .card-back {
   background-color: #f0f0f0;
   transform: rotateY(180deg);
+  z-index: 2;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 .card-inner {
   position: relative;
@@ -116,6 +125,46 @@ body.hard .card {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.6s;
+  overflow: visible;
+}
+.card.matched .card-inner {
+  transform: rotateY(180deg);
+  animation: revealMatch 0.6s ease;
+}
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+.card.matched .card-back {
+  color: #2e7d32;
+  text-shadow: 0 0 6px rgba(76, 175, 80, 0.6);
+  animation: pulseGlow 1.2s ease-in-out infinite;
+}
+@keyframes revealMatch {
+  0% {
+    transform: scale(0.8) rotateY(90deg);
+    opacity: 0;
+    box-shadow: none;
+  }
+  50% {
+    transform: scale(1.05) rotateY(180deg);
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+  }
+  100% {
+    transform: scale(1) rotateY(180deg);
+    box-shadow: none;
+  }
+}
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(76, 175, 80, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.4);
+  }
 }
 #difficulty {
   appearance: none; /* прибирає стандартний стиль браузера */
@@ -150,4 +199,58 @@ body.hard .card {
   text-align: center;
   margin-top: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+#highScores {
+  list-style: none;
+  padding: 16px 24px;
+  margin: 20px auto;
+  max-width: 320px;
+  background: rgba(0, 0, 0, 0.6); /* напівпрозорий фон */
+  border-radius: 16px;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+}
+
+#highScores li {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border-left: 4px solid #4caf50;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+#highScores li:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+.results-title {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-top: 30px;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+.volume-control {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 12px;
+  border-radius: 12px;
+  color: white;
+  font-size: 1.2rem;
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+#volumeSlider {
+  width: 100px;
+  cursor: pointer;
 }

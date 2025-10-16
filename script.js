@@ -108,6 +108,7 @@ function startTimer() {
     timer++;
     document.getElementById("timer").innerText = `Time: ${timer}s`;
   }, 1000);
+  playSound("tickSound");
 }
 function startGame() {
   resetStats();
@@ -115,16 +116,19 @@ function startGame() {
   startTimer();
 }
 function togglePause() {
+  const tick = document.getElementById("tickSound");
   if (!interval && !isPaused) return;
   if (isPaused) {
     interval = setInterval(() => {
       timer++;
       document.getElementById("timer").innerText = `Time: ${timer}s`;
     }, 1000);
+    tick.play();
     isPaused = false;
   } else {
     clearInterval(interval);
     interval = null;
+    tick.pause();
     isPaused = true;
   }
 }
@@ -153,6 +157,8 @@ function checkMatch() {
     playSound("matchSound");
     if (document.querySelectorAll(".matched").length === cards.length) {
       clearInterval(interval);
+      document.getElementById("tickSound").pause();
+      document.getElementById("tickSound").currentTime = 0;
       playSound("winSound");
       saveScore();
       const message = document.getElementById("winMessage");
@@ -184,7 +190,7 @@ function showScores() {
     const item = document.createElement("li");
     item.textContent = `${i + 1}. Time: ${s.time}, Turns: ${
       s.attempts
-    }, Рівень: ${s.difficulty}`;
+    }, Difficulty: ${s.difficulty}`;
     list.appendChild(item);
   });
 }
@@ -201,5 +207,18 @@ function resetStats() {
   document.getElementById("timer").innerText = `Time: 0s`;
   document.getElementById("attempts").innerText = `Turns: 0`;
   document.getElementById("winMessage").style.display = "none";
+  document.getElementById("tickSound").pause();
+  document.getElementById("tickSound").currentTime = 0;
 }
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeIcon = document.getElementById("volumeIcon");
+volumeSlider.addEventListener("input", (e) => {
+  const volume = parseFloat(e.target.value);
+  const sounds = ["flipSound", "matchSound", "winSound", "tickSound"];
+  sounds.forEach((id) => {
+    const audio = document.getElementById(id);
+    if (audio) audio.volume = volume;
+  });
+  volumeIcon.textContent = volume === 0 ? "🔇" : "🔊";
+});
 showScores();

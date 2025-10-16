@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="volume-control">
+      <span id="volumeIcon">🔊</span>
+      <input
+        type="range"
+        id="volumeSlider"
+        min="0"
+        max="1"
+        step="0.01"
+        value="1"
+      />
+    </div>
     <div id="winMessage" class="win-message" style="display: none"></div>
     <h1>Memory match</h1>
     <div id="stats">
@@ -22,11 +33,12 @@
       <option value="medium">Medium (6x6)</option>
       <option value="hard">Hard (8x8)</option>
     </select>
-    <h3>Results</h3>
+    <h3>Best results</h3>
     <ul id="highScores"></ul>
     <audio id="matchSound" src="sounds/match.mp3"></audio>
     <audio id="flipSound" src="sounds/flip.mp3"></audio>
     <audio id="winSound" src="sounds/win.mp3"></audio>
+    <audio id="tickSound" src="sounds/tick.mp3" loop></audio>
     <script src="script.js"></script>
   </body>
 </html>
