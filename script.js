@@ -270,6 +270,7 @@ function checkMatch() {
         .classList.add("win-position");
     }
   } else {
+    playSound("wrongSound");
     setTimeout(() => {
       first.classList.remove("flipped");
       second.classList.remove("flipped");

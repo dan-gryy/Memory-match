@@ -135,22 +135,18 @@ body.hard .card {
   cursor: default;
   animation: pulseGlow 1s ease-in-out infinite;
 }
-
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
-}
 .card-front,
 .card-back {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 8px;
-  backface-visibility: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: clamp(1.5rem, 4vw, 2.5rem);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 .card-front {
   background-color: #534949;
@@ -162,25 +158,29 @@ body.hard .card {
 }
 .card-back {
   background-color: #f0f0f0;
-  transform: rotateY(180deg);
+  opacity: 0;
+  transform: scale(1.2);
+  transition: opacity 0.4s ease, transform 0.4s ease;
   z-index: 2;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   position: relative;
+  visibility: hidden;
 }
 .card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
   transition: transform 0.6s;
   overflow: visible;
 }
-.card.matched .card-inner {
-  transform: rotateY(180deg);
-  animation: revealMatch 0.6s ease;
+.card.flipped .card-front {
+  opacity: 0;
+  transform: scale(0.8);
 }
-.card.flipped .card-inner {
-  transform: rotateY(180deg);
+.card.flipped .card-back {
+  opacity: 1;
+  transform: scale(1);
+  visibility: visible;
 }
 .card.matched .card-back {
   color: #2e7d32;
@@ -420,4 +420,19 @@ body.theme-fantasy {
 #theme:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
+}
+.footer-author {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 4px 0;
+  z-index: 999;
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 0.5px;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
 }
