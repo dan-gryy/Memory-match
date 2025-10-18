@@ -323,7 +323,13 @@ const volumeSlider = document.getElementById("volumeSlider");
 const volumeIcon = document.getElementById("volumeIcon");
 volumeSlider.addEventListener("input", (e) => {
   const volume = parseFloat(e.target.value);
-  const sounds = ["flipSound", "matchSound", "winSound", "tickSound"];
+  const sounds = [
+    "flipSound",
+    "matchSound",
+    "winSound",
+    "tickSound",
+    "wrongSound",
+  ];
   sounds.forEach((id) => {
     const audio = document.getElementById(id);
     if (audio) audio.volume = volume;
