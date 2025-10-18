@@ -86,6 +86,20 @@ h3 {
 .pause-button:hover {
   transform: scale(1.05);
 }
+.button-press {
+  animation: pressEffect 0.2s ease;
+}
+@keyframes pressEffect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 .controls {
   display: flex;
   flex-wrap: wrap;
@@ -220,7 +234,7 @@ body.hard .card {
   }
 }
 #difficulty {
-  appearance: none; /* прибирає стандартний стиль браузера */
+  appearance: none;
   background-color: #ffffff;
   border: 2px solid #2196f3;
   border-radius: 8px;
@@ -492,4 +506,43 @@ body.theme-fantasy {
     max-width: 90%;
     font-size: 0.9rem;
   }
+  #chaosToggle {
+    width: 90%;
+    font-size: 1rem;
+    padding: 10px 16px;
+    margin: 8px auto;
+    display: block;
+  }
+}
+.card.shuffle-animate {
+  animation: shuffleMove 0.4s ease;
+}
+@keyframes shuffleMove {
+  0% {
+    transform: translateY(-10px) scale(0.95);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(10px) scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+#chaosToggle {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+}
+#chaosToggle:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }

@@ -19,6 +19,7 @@
 - 🌌 Glowing match effects
 - 🎨 Custom themes: Animals, Cars, Food, Fantasy — each with unique emoji sets and textures
 - 🖼️ Dynamic backgrounds: Page background changes based on selected theme
+- 🌀 Chaos Mode adds a thrilling twist to the classic memory game. It's designed for players who crave unpredictability and want an extra challenge.
 
 ---
 
@@ -54,7 +55,7 @@ Pull requests, bug reports, and feature suggestions are welcome! Feel free to fo
 Just open `index.html` in any modern browser — no installation required.
 
 ```bash
-git clone https://github.com/your-username/memory-match.git
+git clone https://github.com/dan-gryy/memory-match.git
 cd memory-match
 open index.html
 ```

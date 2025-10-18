@@ -272,6 +272,9 @@ function checkMatch() {
   } else {
     playSound("wrongSound");
     setTimeout(() => {
+      if (chaosMode) {
+        shuffleCardsInDOM();
+      }
       first.classList.remove("flipped");
       second.classList.remove("flipped");
       flipped = [];
@@ -280,7 +283,12 @@ function checkMatch() {
 }
 function saveScore() {
   const difficulty = document.getElementById("difficulty").value;
-  const score = { attempts, time: timer, difficulty };
+  const score = {
+    attempts,
+    time: timer,
+    difficulty,
+    chaos: chaosMode ? "ON" : "OFF",
+  };
   const scores = JSON.parse(localStorage.getItem("memoryScores") || "[]");
   scores.push(score);
   scores.sort((a, b) => a.time - b.time || a.attempts - b.attempts);
@@ -295,7 +303,7 @@ function showScores() {
     const item = document.createElement("li");
     item.textContent = `${i + 1}. Time: ${s.time}, Turns: ${
       s.attempts
-    }, Difficulty: ${s.difficulty}`;
+    }, Difficulty: ${s.difficulty}, Chaos: ${s.chaos || "OFF"}`;
     list.appendChild(item);
   });
 }
@@ -335,5 +343,31 @@ volumeSlider.addEventListener("input", (e) => {
     if (audio) audio.volume = volume;
   });
   volumeIcon.textContent = volume === 0 ? "🔇" : "🔊";
+});
+let chaosMode = false;
+function shuffleCardsInDOM() {
+  const board = document.querySelector(".game-board");
+  const cards = Array.from(board.children);
+  for (let i = cards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cards[i], cards[j]] = [cards[j], cards[i]];
+  }
+  cards.forEach((card) => {
+    card.classList.add("shuffle-animate");
+    board.appendChild(card);
+    setTimeout(() => card.classList.remove("shuffle-animate"), 400);
+  });
+}
+const chaosBtn = document.getElementById("chaosToggle");
+chaosBtn.addEventListener("click", () => {
+  chaosMode = !chaosMode;
+  chaosBtn.textContent = `Chaos Mode: ${chaosMode ? "ON" : "OFF"}`;
+  chaosBtn.classList.toggle("active", chaosMode);
+});
+document.querySelectorAll("button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.classList.add("button-press");
+    setTimeout(() => btn.classList.remove("button-press"), 200);
+  });
 });
 showScores();
