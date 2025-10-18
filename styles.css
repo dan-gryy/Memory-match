@@ -23,7 +23,7 @@ h3 {
 .game-board {
   display: grid;
   flex-wrap: wrap;
-  grid-template-columns: repeat(4, 100px);
+  grid-template-columns: repeat(auto-fit, minmax(clamp(60px, 8vw, 100px), 1fr));
   gap: 10px;
   justify-content: center;
   margin: 20px auto;
@@ -435,4 +435,61 @@ body.theme-fantasy {
   font-family: "Orbitron", sans-serif;
   letter-spacing: 0.5px;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
+}
+@media (max-width: 600px) {
+  h1,
+  h2,
+  h3 {
+    font-size: 1.2rem;
+    padding: 6px 12px;
+    margin-bottom: 8px;
+  }
+  .game-board {
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    gap: 6px;
+    padding: 0 8px;
+  }
+  .card {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    font-size: 2rem;
+  }
+  .buttons,
+  .button-row,
+  .controls {
+    flex-direction: column;
+    gap: 8px;
+    margin: 12px auto;
+  }
+  .game-button,
+  .pause-button {
+    font-size: 1rem;
+    padding: 10px 16px;
+    width: 90%;
+  }
+  .volume-control,
+  .difficulty-control,
+  .theme-control {
+    position: static;
+    margin: 12px auto;
+    width: 90%;
+    justify-content: center;
+  }
+  #volumeSlider {
+    width: 100%;
+  }
+  #difficulty,
+  #theme {
+    width: 100%;
+    font-size: 1rem;
+  }
+  .win-message {
+    font-size: 1.2rem;
+    padding: 12px 16px;
+  }
+  #highScores {
+    max-width: 90%;
+    font-size: 0.9rem;
+  }
 }
