@@ -370,4 +370,25 @@ document.querySelectorAll("button").forEach((btn) => {
     setTimeout(() => btn.classList.remove("button-press"), 200);
   });
 });
+document.getElementById("hintButton").addEventListener("click", () => {
+  const allCards = Array.from(document.querySelectorAll(".card"));
+  const unmatched = allCards.filter(
+    (card) =>
+      !card.classList.contains("flipped") && !card.classList.contains("matched")
+  );
+  allCards.forEach((card) => card.classList.remove("hint"));
+  const symbolMap = {};
+  unmatched.forEach((card) => {
+    const symbol = card.dataset.symbol;
+    if (!symbolMap[symbol]) symbolMap[symbol] = [];
+    symbolMap[symbol].push(card);
+  });
+  for (const pair of Object.values(symbolMap)) {
+    if (pair.length >= 2) {
+      pair[0].classList.add("hint");
+      pair[1].classList.add("hint");
+      break;
+    }
+  }
+});
 showScores();

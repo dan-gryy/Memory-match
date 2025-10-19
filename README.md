@@ -32,18 +32,6 @@
 
 ---
 
-## 📈 Future Enhancements
-
-🧠 Multiplayer mode or two-player split screen
-
-📊 Online leaderboard with backend integration
-
-🕹 Touch gestures and keyboard navigation
-
-🔐 Save progress between sessions
-
----
-
 # 🤝 Contributing
 
 Pull requests, bug reports, and feature suggestions are welcome! Feel free to fork the project or open an Issue.

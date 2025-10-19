@@ -272,6 +272,21 @@ body.hard .card {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(4px);
 }
+#hintButton {
+  font-size: 0.95rem;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#hintButton:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
 .difficulty-control label {
   font-weight: bold;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
@@ -450,6 +465,22 @@ body.theme-fantasy {
   letter-spacing: 0.5px;
   box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3);
 }
+.card.hint {
+  outline: 3px dashed #ffeb3b;
+  box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
+  animation: hintPulse 1s ease-in-out infinite;
+}
+@keyframes hintPulse {
+  0% {
+    box-shadow: 0 0 6px rgba(255, 235, 59, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 235, 59, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 6px rgba(255, 235, 59, 0.4);
+  }
+}
 @media (max-width: 600px) {
   h1,
   h2,
@@ -468,6 +499,11 @@ body.theme-fantasy {
     height: auto;
     aspect-ratio: 1 / 1;
     font-size: 2rem;
+  }
+  body.medium .card,
+  body.hard .card {
+    font-size: 1.6rem;
+    border-width: 1px;
   }
   .buttons,
   .button-row,
@@ -546,3 +582,9 @@ body.theme-fantasy {
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
 }
+#hintButton {
+  width: 100%;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
