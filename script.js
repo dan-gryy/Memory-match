@@ -1,9 +1,13 @@
 let cards = [];
-let flipped = [];
 let attempts = 0;
 let timer = 0;
 let interval = null;
 let isPaused = false;
+let duelMode = false;
+let aiMemory = {};
+let aiFlipped = [];
+let playerFlipped = [];
+let aiInterval = null;
 const emojiSets = {
   animals: [
     "🐶",
@@ -153,7 +157,6 @@ function getSymbols() {
 }
 document.getElementById("difficulty").addEventListener("change", () => {
   resetStats();
-  generateBoard();
 });
 function updateGridSize() {
   document.getElementById("winMessage").style.display = "none";
@@ -173,7 +176,7 @@ document.getElementById("theme").addEventListener("change", () => {
   );
   document.body.classList.add(`theme-${theme}`);
   resetStats();
-  generateBoard();
+  startGame();
 });
 function generateBoard() {
   flipped = [];
@@ -202,6 +205,31 @@ function generateBoard() {
     document.getElementById("gameBoard").appendChild(card);
   });
 }
+function renderBoard(boardId, cardsArray, isPlayer) {
+  const board = document.getElementById(boardId);
+  board.innerHTML = "";
+  cardsArray.forEach((symbol, index) => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    card.dataset.symbol = symbol;
+    card.dataset.index = index;
+    card.dataset.owner = isPlayer ? "player" : "ai";
+    const inner = document.createElement("div");
+    inner.classList.add("card-inner");
+    const front = document.createElement("div");
+    front.classList.add("card-front");
+    const back = document.createElement("div");
+    back.classList.add("card-back");
+    back.textContent = symbol;
+    inner.appendChild(front);
+    inner.appendChild(back);
+    card.appendChild(inner);
+    if (isPlayer) {
+      card.addEventListener("click", () => flipCard(card));
+    }
+    board.appendChild(card);
+  });
+}
 function startTimer() {
   clearInterval(interval);
   interval = setInterval(() => {
@@ -212,86 +240,182 @@ function startTimer() {
 }
 function startGame() {
   resetStats();
-  generateBoard();
-  startTimer();
+  aiMemory = {};
+  aiFlipped = [];
+  timer = 0;
+  updateTimerDisplay();
+  clearInterval(interval);
+  interval = setInterval(() => {
+    timer++;
+    updateTimerDisplay();
+  }, 1000);
+  playSound("tickSound");
+  const symbols = getSymbols();
+  const pairCount = symbols.length;
+  const cardsArray = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+  const cols = Math.ceil(Math.sqrt(pairCount * 2));
+  if (duelMode) {
+    document.getElementById(
+      "playerBoard"
+    ).style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+    document.getElementById(
+      "aiBoard"
+    ).style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+    renderBoard("playerBoard", cardsArray, true);
+    renderBoard("aiBoard", [...cardsArray], false);
+    startAI();
+  } else {
+    document.getElementById(
+      "playerBoard"
+    ).style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+    document.getElementById("aiBoard").innerHTML = "";
+    renderBoard("playerBoard", cardsArray, true);
+  }
 }
 function togglePause() {
   const tick = document.getElementById("tickSound");
-  if (!interval && !isPaused) return;
+  if (!interval && !aiInterval && !isPaused) return;
   if (isPaused) {
     interval = setInterval(() => {
       timer++;
       document.getElementById("timer").innerText = `Time: ${timer}s`;
     }, 1000);
     tick.play();
+    startAI();
     isPaused = false;
   } else {
     clearInterval(interval);
     interval = null;
     tick.pause();
+    clearInterval(aiInterval);
+    aiInterval = null;
     isPaused = true;
   }
 }
-function flipCard(card) {
+function flipCard(card, by = "player") {
+  const flippedGroup = by === "ai" ? aiFlipped : playerFlipped;
   if (
-    flipped.length === 2 ||
-    flipped.includes(card) ||
-    card.classList.contains("flipped")
-  )
+    flippedGroup.length === 2 &&
+    flippedGroup[0].classList.contains("matched") &&
+    flippedGroup[1].classList.contains("matched")
+  ) {
+    flippedGroup.length = 0;
+  }
+  if (
+    flippedGroup.length >= 2 ||
+    flippedGroup.includes(card) ||
+    card.classList.contains("matched")
+  ) {
     return;
+  }
   card.classList.add("flipped");
-  flipped.push(card);
-  if (flipped.length === 2) {
+  if (by === "ai" && !aiFlipped.includes(card)) {
+    aiFlipped.push(card);
+  }
+  card.setAttribute("data-flip-time", Date.now());
+  if (!flippedGroup.includes(card)) {
+    flippedGroup.push(card);
+  }
+  if (by === "ai") {
+    if (!aiMemory[card.dataset.symbol]) aiMemory[card.dataset.symbol] = [];
+    if (!aiMemory[card.dataset.symbol].includes(card)) {
+      aiMemory[card.dataset.symbol].push(card);
+    }
+    card.classList.add("ai-flip");
+  }
+  if (flippedGroup.length === 2) {
+    setTimeout(() => checkMatch(by), 300);
+  }
+  if (by === "player" && flippedGroup.length === 2) {
     attempts++;
-    document.getElementById("attempts").innerText = `Turns: ${attempts}`;
-    checkMatch();
+    updateTimerDisplay();
   }
   playSound("flipSound");
 }
-function checkMatch() {
-  const [first, second] = flipped;
-  if (first.dataset.symbol === second.dataset.symbol) {
+function checkMatch(by = "player") {
+  const flippedGroup = by === "ai" ? aiFlipped : playerFlipped;
+  const [first, second] = flippedGroup;
+  if (!first || !second) {
+    if (by === "ai") aiFlipped.length = 0;
+    return;
+  }
+  const isMatch = first.dataset.symbol === second.dataset.symbol;
+  if (isMatch) {
     first.classList.add("matched");
     second.classList.add("matched");
-    flipped = [];
-    playSound("matchSound");
-    if (document.querySelectorAll(".matched").length === cards.length) {
-      clearInterval(interval);
-      document.getElementById("tickSound").pause();
-      document.getElementById("tickSound").currentTime = 0;
-      playSound("winSound");
-      saveScore();
-      const message = document.getElementById("winMessage");
-      message.innerText = `🎉 Congratulations! You completed the game in ${timer} seconds with ${attempts} turns.`;
-      message.style.display = "block";
-      document.querySelector(".volume-control").classList.add("win-position");
-      document
-        .querySelector(".difficulty-control")
-        .classList.add("win-position");
+    if (by === "ai") {
+      first.classList.add("ai-match");
+      second.classList.add("ai-match");
+      delete aiMemory[first.dataset.symbol];
     }
+    if (by === "player") {
+      playSound("matchSound");
+    }
+    flippedGroup.length = 0;
   } else {
-    playSound("wrongSound");
+    if (by === "player") {
+      playSound("wrongSound");
+    }
     setTimeout(() => {
-      if (chaosMode) {
-        shuffleCardsInDOM();
-      }
+      if (chaosMode) shuffleCardsInDOM();
       first.classList.remove("flipped");
       second.classList.remove("flipped");
-      flipped = [];
+      flippedGroup.length = 0;
     }, 1000);
+  }
+  if (by === "ai") aiFlipped.length = 0;
+  const playerTotal = document.querySelectorAll("#playerBoard .card").length;
+  const playerMatched = document.querySelectorAll(
+    "#playerBoard .matched"
+  ).length;
+  const aiTotal = document.querySelectorAll("#aiBoard .card").length;
+  const aiMatched = document.querySelectorAll("#aiBoard .matched").length;
+  const playerPairs = playerMatched / 2;
+  const aiPairs = aiMatched / 2;
+  const totalPairs = (playerTotal + aiTotal) / 2;
+  const allPairsFound = playerPairs + aiPairs === totalPairs;
+  const playerDone = playerMatched === playerTotal;
+  const aiDone = duelMode && aiMatched === aiTotal;
+  const soloMessage = document.getElementById("soloWinMessage");
+  const duelMessage = document.getElementById("duelWinMessage");
+  if (duelMode && (playerDone || aiDone || allPairsFound)) {
+    clearInterval(interval);
+    clearInterval(aiInterval);
+    aiInterval = null;
+    document.getElementById("tickSound").pause();
+    document.getElementById("tickSound").currentTime = 0;
+    if (playerPairs > aiPairs) {
+      playSound("winSound");
+      duelMessage.innerText = `🏆 You win! ${playerPairs} vs ${aiPairs} pairs`;
+    } else if (aiPairs > playerPairs) {
+      playSound("loseSound");
+      duelMessage.innerText = `🤖 AI wins! ${aiPairs} vs ${playerPairs} pairs`;
+    } else {
+      playSound("winSound");
+      duelMessage.innerText = `🤝 Draw! ${playerPairs} vs ${aiPairs} pairs`;
+    }
+    saveScore();
+    duelMessage.classList.add("visible");
+    document.querySelector(".volume-control").classList.add("win-position");
+    document.querySelector(".difficulty-control").classList.add("win-position");
+  }
+  if (!duelMode && playerMatched === playerTotal) {
+    clearInterval(interval);
+    document.getElementById("tickSound").pause();
+    document.getElementById("tickSound").currentTime = 0;
+    playSound("winSound");
+    saveScore();
+    soloMessage.innerText = `🎉 Congratulations! You completed the game in ${timer} seconds with ${attempts} turns.`;
+    soloMessage.classList.add("visible");
+    document.querySelector(".volume-control").classList.add("win-position");
+    document.querySelector(".difficulty-control").classList.add("win-position");
   }
 }
 function saveScore() {
   const difficulty = document.getElementById("difficulty").value;
-  const score = {
-    attempts,
-    time: timer,
-    difficulty,
-    chaos: chaosMode ? "ON" : "OFF",
-  };
+  const chaos = chaosMode ? "ON" : "OFF";
   const scores = JSON.parse(localStorage.getItem("memoryScores") || "[]");
-  scores.push(score);
-  scores.sort((a, b) => a.time - b.time || a.attempts - b.attempts);
+  scores.unshift({ time: timer, attempts, difficulty, chaos });
   localStorage.setItem("memoryScores", JSON.stringify(scores.slice(0, 10)));
   showScores();
 }
@@ -319,13 +443,20 @@ function resetStats() {
   isPaused = false;
   document.getElementById("timer").innerText = `Time: 0s`;
   document.getElementById("attempts").innerText = `Turns: 0`;
-  document.getElementById("winMessage").style.display = "none";
   document.getElementById("tickSound").pause();
   document.getElementById("tickSound").currentTime = 0;
   document.querySelector(".volume-control").classList.remove("win-position");
   document
     .querySelector(".difficulty-control")
     .classList.remove("win-position");
+  document.getElementById("soloWinMessage").classList.remove("visible");
+  document.getElementById("duelWinMessage").classList.remove("visible");
+  clearInterval(aiInterval);
+  aiInterval = null;
+}
+function updateTimerDisplay() {
+  document.getElementById("timer").innerText = `Time: ${timer}s`;
+  document.getElementById("attempts").innerText = `Turns: ${attempts}`;
 }
 const volumeSlider = document.getElementById("volumeSlider");
 const volumeIcon = document.getElementById("volumeIcon");
@@ -391,4 +522,98 @@ document.getElementById("hintButton").addEventListener("click", () => {
     }
   }
 });
+document.getElementById("duelToggle").addEventListener("click", () => {
+  duelMode = !duelMode;
+  const btn = document.getElementById("duelToggle");
+  btn.textContent = duelMode ? "⚔️ Duel vs AI: ON" : "⚔️ Duel vs AI: OFF";
+  btn.classList.toggle("active", duelMode);
+  document.getElementById("aiBoard").style.display = duelMode ? "grid" : "none";
+});
+function checkDuelWinner() {
+  const playerDone =
+    document.querySelectorAll("#playerBoard .matched").length === 16;
+  const aiDone = document.querySelectorAll("#aiBoard .matched").length === 16;
+  if (playerDone || aiDone) {
+    clearInterval(interval);
+    document.getElementById("tickSound").pause();
+    document.getElementById("tickSound").currentTime = 0;
+    playSound("winSound");
+    const message = document.getElementById("winMessage");
+    if (playerDone && !aiDone) {
+      message.innerText = `🏆 You win!`;
+    } else if (aiDone && !playerDone) {
+      message.innerText = `🤖 AI wins!`;
+    } else {
+      message.innerText = `🤝 Draw!`;
+    }
+    message.style.display = "block";
+  }
+}
+function canFlip(card) {
+  return !card.classList.contains("matched");
+}
+function startAI() {
+  clearInterval(aiInterval);
+  const aiCards = Array.from(document.querySelectorAll("#aiBoard .card"));
+  let aiBusy = false;
+  function aiTurn() {
+    if (aiBusy) return;
+    aiBusy = true;
+    const active = aiCards.filter(
+      (c) => c.classList.contains("flipped") && !c.classList.contains("matched")
+    );
+    if (active.length > 0) {
+      aiBusy = false;
+      return;
+    }
+    for (let symbol in aiMemory) {
+      const known = aiMemory[symbol].filter((c) => canFlip(c));
+      if (known.length === 2) {
+        flipCard(known[0], "ai");
+        setTimeout(() => {
+          flipCard(known[1], "ai");
+          setTimeout(() => {
+            aiBusy = false;
+          }, 700);
+        }, 600);
+        return;
+      }
+    }
+    for (let symbol in aiMemory) {
+      const known = aiMemory[symbol].filter((c) => canFlip(c));
+      if (known.length === 1) {
+        const unmatched = aiCards.filter((c) => canFlip(c) && c !== known[0]);
+        if (unmatched.length > 0) {
+          flipCard(known[0], "ai");
+          setTimeout(() => {
+            const second =
+              unmatched[Math.floor(Math.random() * unmatched.length)];
+            flipCard(second, "ai");
+            setTimeout(() => {
+              aiBusy = false;
+            }, 700);
+          }, 600);
+          return;
+        }
+      }
+    }
+    const unmatched = aiCards.filter((c) => canFlip(c));
+    if (unmatched.length < 2) {
+      aiBusy = false;
+      return;
+    }
+    const first = unmatched[Math.floor(Math.random() * unmatched.length)];
+    flipCard(first, "ai");
+    setTimeout(() => {
+      const stillUnmatched = aiCards.filter((c) => canFlip(c) && c !== first);
+      const second =
+        stillUnmatched[Math.floor(Math.random() * stillUnmatched.length)];
+      flipCard(second, "ai");
+      setTimeout(() => {
+        aiBusy = false;
+      }, 700);
+    }, 600);
+  }
+  aiInterval = setInterval(aiTurn, 3000);
+}
 showScores();

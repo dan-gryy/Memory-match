@@ -23,13 +23,19 @@
         value="1"
       />
     </div>
-    <div id="winMessage" class="win-message" style="display: none"></div>
+    <div id="soloWinMessage" class="win-message"></div>
+    <div id="duelWinMessage" class="win-message"></div>
     <h1>Memory match</h1>
     <div id="stats">
       <span id="attempts">Turns: 0</span>
       <span id="timer">Time: 0s</span>
     </div>
-    <div class="game-board" id="gameBoard"></div>
+    <div class="duel-container">
+      <div class="board-label">🧑 You</div>
+      <div class="game-board" id="playerBoard"></div>
+      <div class="board-label">🤖 AI</div>
+      <div class="game-board" id="aiBoard"></div>
+    </div>
     <div class="controls">
       <button class="game-button" onclick="startGame()">Start/Restart</button>
       <button class="pause-button" onclick="togglePause()">Pause/Resume</button>
@@ -53,6 +59,7 @@
         <option value="fantasy">Fantasy</option>
       </select>
     </div>
+    <button id="duelToggle" class="duel-button">⚔️ Duel vs AI: OFF</button>
     <h3>Best results</h3>
     <ul id="highScores"></ul>
     <div class="footer-author">Author: Hryshchenko Illia</div>
@@ -60,6 +67,7 @@
     <audio id="matchSound" src="sounds/match.mp3" preload="auto"></audio>
     <audio id="wrongSound" src="sounds/wrong.mp3" preload="auto"></audio>
     <audio id="winSound" src="sounds/win.mp3"></audio>
+    <audio id="loseSound" src="sounds/lose.mp3" preload="auto"></audio>
     <audio id="tickSound" src="sounds/tick.mp3" loop></audio>
     <script src="script.js"></script>
   </body>

@@ -20,6 +20,7 @@
 - 🎨 Custom themes: Animals, Cars, Food, Fantasy — each with unique emoji sets and textures
 - 🖼️ Dynamic backgrounds: Page background changes based on selected theme
 - 🌀 Chaos Mode adds a thrilling twist to the classic memory game. It's designed for players who crave unpredictability and want an extra challenge.
+- 🤖 AI Duel Mode: challenge your memory against a built-in AI opponent in Duel Mode. When enabled, the AI flips cards automatically, remembers symbols, and competes to match pairs faster than you.
 
 ---
 
