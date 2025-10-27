@@ -7,6 +7,11 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
 h1,
 h2,
 h3 {
@@ -41,8 +46,15 @@ h3 {
   text-align: center;
   font-weight: bold;
   font-size: 1.2rem;
-  margin-bottom: 8px;
-  grid-column: span 2;
+  padding: 4px 12px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  display: inline-block;
 }
 #aiBoard {
   display: none;
@@ -227,7 +239,7 @@ body.hard .card {
   animation: pulseGlow 1.2s ease-in-out infinite;
 }
 .card.ai-flip {
-  border: 2px solid #f44336;
+  border: none;
 }
 .card.ai-match {
   background-color: #ef9a9a;
@@ -342,6 +354,9 @@ body.hard .card {
   border-radius: 0 0 12px 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+.win-message.lose {
+  background: linear-gradient(135deg, #f44336, #c62828);
+}
 #win-message {
   position: fixed;
   top: 50%;
@@ -412,7 +427,7 @@ body.hard .card {
   position: fixed;
   top: 16px;
   left: 16px;
-  z-index: 100;
+  z-index: 9999;
   transition: top 0.4s ease;
   background: rgba(0, 0, 0, 0.5);
   padding: 8px 12px;
@@ -477,6 +492,11 @@ body.theme-fantasy .card-front {
   background-size: cover;
   background-position: center;
 }
+body.theme-sport .card-front {
+  background-image: url("textures/sport.jpg");
+  background-size: cover;
+  background-position: center;
+}
 body.theme-cars {
   background-image: url("https://w0.peakpx.com/wallpaper/368/936/HD-wallpaper-circuit-de-spa-francorchamps-track-belgium-sport-spa-francorchamps.jpg");
   background-size: cover;
@@ -493,6 +513,13 @@ body.theme-food {
 }
 body.theme-fantasy {
   background-image: url("https://images-rsg.storage.googleapis.com/wp-content/uploads/2024/03/Enchanted-Forest-Pathway.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+body.theme-sport {
+  background-image: url("https://smartinfo.com.ua/crop/1760x992/storage/photos/s/p/sportlifedynamo2.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

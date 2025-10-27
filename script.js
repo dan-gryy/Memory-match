@@ -145,6 +145,40 @@ const emojiSets = {
     "🧭",
     "🪤",
   ],
+  sport: [
+    "⚽",
+    "🏀",
+    "🏈",
+    "⚾",
+    "🎾",
+    "🏐",
+    "🏉",
+    "🥏",
+    "🎱",
+    "🏓",
+    "🏸",
+    "🥊",
+    "🥋",
+    "⛳",
+    "🏹",
+    "🛷",
+    "⛸️",
+    "🎿",
+    "🪂",
+    "🏄‍♂️",
+    "🏊‍♀️",
+    "🚴‍♂️",
+    "🏋️‍♀️",
+    "🤸‍♂️",
+    "🤼‍♀️",
+    "🤽‍♂️",
+    "🧗‍♀️",
+    "🛼",
+    "🛶",
+    "🧘‍♂️",
+    "🏇",
+    "🎯",
+  ],
 };
 function getSymbols() {
   const level = document.getElementById("difficulty").value;
@@ -172,11 +206,29 @@ document.getElementById("theme").addEventListener("change", () => {
     "theme-animals",
     "theme-cars",
     "theme-food",
-    "theme-fantasy"
+    "theme-fantasy",
+    "theme-sport"
   );
   document.body.classList.add(`theme-${theme}`);
   resetStats();
-  startGame();
+  document.querySelectorAll(".card.flipped").forEach((card) => {
+    card.classList.remove("flipped");
+  });
+  const symbols = getSymbols();
+  const cardsArray = [...symbols, ...symbols].sort(() => Math.random() - 0.5);
+  const cols = Math.ceil(Math.sqrt(cardsArray.length));
+  document.getElementById(
+    "playerBoard"
+  ).style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+  renderBoard("playerBoard", cardsArray, true);
+  if (duelMode) {
+    document.getElementById(
+      "aiBoard"
+    ).style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+    renderBoard("aiBoard", [...cardsArray], false);
+  } else {
+    document.getElementById("aiBoard").innerHTML = "";
+  }
 });
 function generateBoard() {
   flipped = [];
@@ -386,12 +438,15 @@ function checkMatch(by = "player") {
     document.getElementById("tickSound").currentTime = 0;
     if (playerPairs > aiPairs) {
       playSound("winSound");
+      duelMessage.classList.remove("lose");
       duelMessage.innerText = `🏆 You win! ${playerPairs} vs ${aiPairs} pairs`;
     } else if (aiPairs > playerPairs) {
       playSound("loseSound");
+      duelMessage.classList.add("lose");
       duelMessage.innerText = `🤖 AI wins! ${aiPairs} vs ${playerPairs} pairs`;
     } else {
       playSound("winSound");
+      duelMessage.classList.remove("lose");
       duelMessage.innerText = `🤝 Draw! ${playerPairs} vs ${aiPairs} pairs`;
     }
     saveScore();
@@ -466,6 +521,7 @@ volumeSlider.addEventListener("input", (e) => {
     "flipSound",
     "matchSound",
     "winSound",
+    "loseSound",
     "tickSound",
     "wrongSound",
   ];
