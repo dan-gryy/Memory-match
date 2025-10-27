@@ -345,6 +345,9 @@ function togglePause() {
   }
 }
 function flipCard(card, by = "player") {
+  if (!interval && by === "player") {
+    startTimer();
+  }
   const flippedGroup = by === "ai" ? aiFlipped : playerFlipped;
   if (
     flippedGroup.length === 2 &&

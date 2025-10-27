@@ -548,6 +548,33 @@ body.theme-sport {
   outline: none;
   box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.3);
 }
+#stats {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 12px auto;
+  font-family: "Orbitron", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  background: transparent;
+  padding: 8px 16px;
+  border-radius: 12px;
+  box-shadow: none;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+#stats span {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+#stats span:hover {
+  transform: scale(1.05);
+}
 .footer-author {
   position: fixed;
   bottom: 0;
